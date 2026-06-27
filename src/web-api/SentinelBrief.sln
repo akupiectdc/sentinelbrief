@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SentinelBrief.WebApi", "SentinelBrief.WebApi\SentinelBrief.WebApi.csproj", "{5732B88E-635A-4EBC-8A15-2EC26BA22CB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SentinelBrief.WebApi.Tests", "SentinelBrief.WebApi.Tests\SentinelBrief.WebApi.Tests.csproj", "{DF4093B6-67B9-4DE5-AC3F-8D7D6CD3F613}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5732B88E-635A-4EBC-8A15-2EC26BA22CB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5732B88E-635A-4EBC-8A15-2EC26BA22CB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5732B88E-635A-4EBC-8A15-2EC26BA22CB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5732B88E-635A-4EBC-8A15-2EC26BA22CB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF4093B6-67B9-4DE5-AC3F-8D7D6CD3F613}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF4093B6-67B9-4DE5-AC3F-8D7D6CD3F613}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF4093B6-67B9-4DE5-AC3F-8D7D6CD3F613}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF4093B6-67B9-4DE5-AC3F-8D7D6CD3F613}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
