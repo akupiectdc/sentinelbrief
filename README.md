@@ -8,9 +8,8 @@ internal security procedures) and answers questions using only retrieved
 evidence. It returns citations and refuses to answer when the indexed documents
 do not provide enough evidence.
 
-This is a portfolio project for an AI Programmer role. It is intentionally
-**local-only** in the MVP to demonstrate on-premise LLM architecture: no cloud
-LLM providers are used or implemented.
+The project is intentionally **local-only** in the MVP to demonstrate
+on-premise LLM architecture: no cloud LLM providers are used or implemented.
 
 ![SentinelBrief demo: asking a question and getting a grounded, cited answer](docs/assets/demo.gif)
 
