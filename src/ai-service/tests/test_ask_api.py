@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -54,7 +56,7 @@ def _override(hits: list[RetrievedChunk]) -> None:
 
 
 @pytest.fixture(autouse=True)
-def _clear_overrides() -> None:
+def _clear_overrides() -> Iterator[None]:
     yield
     app.dependency_overrides.clear()
 

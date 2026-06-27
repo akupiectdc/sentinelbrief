@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -37,7 +39,7 @@ class _FakeVectorStore:
 
 
 @pytest.fixture
-def fake_store() -> _FakeVectorStore:
+def fake_store() -> Iterator[_FakeVectorStore]:
     store = _FakeVectorStore()
     app.dependency_overrides[embedding_provider_dependency] = _FakeEmbedder
     app.dependency_overrides[vector_store_dependency] = lambda: store

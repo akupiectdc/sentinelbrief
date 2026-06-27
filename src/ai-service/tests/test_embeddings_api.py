@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -17,7 +19,7 @@ class _FakeEmbeddingProvider:
 
 
 @pytest.fixture(autouse=True)
-def _override_provider() -> None:
+def _override_provider() -> Iterator[None]:
     app.dependency_overrides[embedding_provider_dependency] = _FakeEmbeddingProvider
     yield
     app.dependency_overrides.clear()
