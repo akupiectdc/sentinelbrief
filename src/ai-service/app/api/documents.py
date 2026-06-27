@@ -34,6 +34,17 @@ from app.vectorstores.qdrant import QdrantVectorStore
 
 router = APIRouter(prefix="/documents", tags=["documents"])
 
+# Stable namespace so the same source (filename, url, or title) always maps to
+# the same document_id. This makes re-ingestion idempotent: a document updates
+# in place instead of accumulating duplicate copies on every reseed.
+_DOCUMENT_NAMESPACE = uuid.UUID("9f1a7b30-5e2c-4c8a-9b6d-2c5a1e8f4d33")
+
+
+def _document_id(request: IngestRequest) -> str:
+    """Derive a deterministic document_id from the document's source identity."""
+    source_key = request.filename or request.url or request.title
+    return str(uuid.uuid5(_DOCUMENT_NAMESPACE, source_key))
+
 
 @router.post("/chunk", response_model=ChunkResponse)
 def chunk_document(
@@ -72,7 +83,7 @@ async def ingest_document(
     Chunk text and metadata are kept in the document store; the embedding
     vectors are persisted in Qdrant for similarity search.
     """
-    document_id = str(uuid.uuid4())
+    document_id = _document_id(request)
     text = parse_text(request.text)
     chunks = chunk_text(
         text,
@@ -82,6 +93,9 @@ async def ingest_document(
         chunk_size=settings.chunk_size,
         chunk_overlap=settings.chunk_overlap,
     )
+    # Replace any previous version of this document so re-ingesting updates it
+    # in place rather than leaving duplicate vectors behind.
+    await vector_store.delete_document(document_id)
     if chunks:
         vectors = await embedder.embed([chunk.text for chunk in chunks])
         await vector_store.upsert(chunks, vectors)

@@ -20,13 +20,17 @@ class _FakeEmbeddingProvider:
 
 
 class _FakeVectorStore:
-    """Records upserts in memory; never touches Qdrant."""
+    """Records upserts and deletes in memory; never touches Qdrant."""
 
     def __init__(self) -> None:
         self.upserted: list[tuple] = []
+        self.deleted: list[str] = []
 
     async def upsert(self, chunks, vectors) -> None:
         self.upserted.append((chunks, vectors))
+
+    async def delete_document(self, document_id) -> None:
+        self.deleted.append(document_id)
 
 
 @pytest.fixture(autouse=True)
@@ -69,6 +73,24 @@ def test_list_documents_reflects_ingestion() -> None:
     assert body["count"] == 2
     titles = {d["title"] for d in body["documents"]}
     assert titles == {"Doc A", "Doc B"}
+
+
+def test_reingesting_same_document_updates_in_place() -> None:
+    # Same source identity (same title, no filename) must map to one document,
+    # not accumulate duplicates on re-ingest.
+    first = _ingest("Same Doc")
+    second = _ingest("Same Doc")
+    assert first["document_id"] == second["document_id"]
+
+    response = client.get("/documents")
+    assert response.json()["count"] == 1
+
+
+def test_distinct_sources_stay_separate() -> None:
+    a = _ingest("Doc A")
+    b = _ingest("Doc B")
+    assert a["document_id"] != b["document_id"]
+    assert client.get("/documents").json()["count"] == 2
 
 
 def test_get_document_returns_chunks() -> None:

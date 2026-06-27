@@ -67,6 +67,29 @@ class QdrantVectorStore:
         ]
         await self._client.upsert(collection_name=self._collection, points=points)
 
+    async def delete_document(self, document_id: str) -> None:
+        """Delete every stored point belonging to ``document_id``.
+
+        Called before re-ingesting a document so the new version replaces the
+        old chunks instead of leaving stale duplicates behind (including the
+        case where the new version has fewer chunks than before).
+        """
+        if not await self._client.collection_exists(self._collection):
+            return
+        await self._client.delete(
+            collection_name=self._collection,
+            points_selector=qmodels.FilterSelector(
+                filter=qmodels.Filter(
+                    must=[
+                        qmodels.FieldCondition(
+                            key="document_id",
+                            match=qmodels.MatchValue(value=document_id),
+                        )
+                    ]
+                )
+            ),
+        )
+
     async def search(self, vector: list[float], top_k: int) -> list[RetrievedChunk]:
         """Return the ``top_k`` most similar chunks to ``vector``."""
         if not await self._client.collection_exists(self._collection):
