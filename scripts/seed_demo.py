@@ -7,8 +7,10 @@ file in sample-data/synthetic/ to the ingestion endpoint.
 Usage (run through uv, per the project's uv-only rule):
     uv run --project src/ai-service python scripts/seed_demo.py [base_url]
 
-Defaults to the C# gateway at http://localhost:5000 (which forwards to the
-ai-service). Pass http://localhost:8000 to target the ai-service directly.
+Defaults to the ai-service at http://localhost:8000. Seeding targets the
+ai-service directly because it speaks snake_case natively; the C# gateway's
+public contract is camelCase, so posting snake_case fields (e.g. source_type)
+through it would be dropped. Pass a gateway URL only if sending camelCase.
 """
 
 from __future__ import annotations
@@ -49,7 +51,7 @@ def ingest(base_url: str, path: Path) -> None:
 
 
 def main() -> int:
-    base_url = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:5000"
+    base_url = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:8000"
     files = sorted(SYNTHETIC_DIR.glob("*.md"))
     if not files:
         print(f"No synthetic documents found in {SYNTHETIC_DIR}", file=sys.stderr)

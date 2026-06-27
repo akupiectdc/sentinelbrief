@@ -77,9 +77,33 @@ if [ "$ready" != "1" ]; then
   exit 1
 fi
 
+# Seeding can fail transiently (e.g. Ollama still warming up), so retry and then
+# verify the corpus is actually non-empty. An empty corpus makes every answer a
+# refusal, so we surface that loudly instead of declaring success.
+# Seed against the ai-service directly (snake_case-native); verify through the
+# gateway so the public read path is exercised too.
+corpus_count() {
+  curl -sf "${WEB_URL}/documents" 2>/dev/null \
+    | tr ',' '\n' | grep -o '"count":[0-9]*' | head -1 | grep -o '[0-9]*'
+}
+
 echo "Seeding demo corpus..."
-( cd "$ROOT" && uv run --project src/ai-service python scripts/seed_demo.py "$WEB_URL" ) \
-  || echo "  ! seeding failed (you can re-run scripts/seed_demo.py later)"
+seeded=""
+for attempt in 1 2 3; do
+  ( cd "$ROOT" && uv run --project src/ai-service python scripts/seed_demo.py "$AI_URL" ) || true
+  count="$(corpus_count)"
+  if [ -n "$count" ] && [ "$count" -gt 0 ]; then
+    seeded=1
+    echo "  corpus ready: ${count} document(s) indexed"
+    break
+  fi
+  echo "  seed attempt ${attempt} left the corpus empty; retrying in 3s..."
+  sleep 3
+done
+if [ "$seeded" != "1" ]; then
+  echo "  WARNING: corpus is still empty - answers will be refusals." >&2
+  echo "  Re-run later: uv run --project src/ai-service python scripts/seed_demo.py ${AI_URL}" >&2
+fi
 
 echo ""
 echo "--------------------------------------------"

@@ -81,14 +81,34 @@ try {
         exit 1
     }
 
+    # Seeding can fail transiently (e.g. Ollama still warming up), so retry and
+    # then verify the corpus is actually non-empty. An empty corpus makes every
+    # answer a refusal, so we surface that loudly instead of declaring success.
+    # Seed against the ai-service directly (snake_case-native); verify through
+    # the gateway so the public read path is exercised too.
     Write-Host "Seeding demo corpus..."
-    try {
-        Push-Location $Root
-        uv run --project src/ai-service python scripts/seed_demo.py $WebUrl
-    } catch {
-        Write-Host "  ! seeding failed (you can re-run scripts/seed_demo.py later)"
-    } finally {
-        Pop-Location
+    $seeded = $false
+    foreach ($attempt in 1..3) {
+        try {
+            Push-Location $Root
+            uv run --project src/ai-service python scripts/seed_demo.py $AiUrl
+        } catch {
+        } finally {
+            Pop-Location
+        }
+        $count = 0
+        try { $count = [int](Invoke-RestMethod -Uri "$WebUrl/documents" -TimeoutSec 5).count } catch {}
+        if ($count -gt 0) {
+            $seeded = $true
+            Write-Host "  corpus ready: $count document(s) indexed"
+            break
+        }
+        Write-Host "  seed attempt $attempt left the corpus empty; retrying in 3s..."
+        Start-Sleep -Seconds 3
+    }
+    if (-not $seeded) {
+        Write-Host "  WARNING: corpus is still empty - answers will be refusals."
+        Write-Host "  Re-run later: uv run --project src/ai-service python scripts/seed_demo.py $AiUrl"
     }
 
     Write-Host ""
