@@ -10,6 +10,8 @@ This is a portfolio project for an AI Programmer role. It is intentionally
 **local-only** in the MVP to demonstrate on-premise LLM architecture: no cloud
 LLM providers are used or implemented.
 
+![SentinelBrief demo: asking a question and getting a grounded, cited answer](docs/assets/demo.gif)
+
 ## Architecture
 
 ```mermaid
@@ -201,8 +203,8 @@ The page calls the gateway's `/ask` endpoint and shows the grounded answer with
 its citations and scores - or a clearly styled refusal when the indexed
 documents do not support the question.
 
-> **Screenshot / demo GIF:** add `docs/assets/demo.gif` and reference it here.
-> See [docs/demo-script.md](docs/demo-script.md) for a recording walkthrough.
+The demo recording at the top of this README shows the full flow. See
+[docs/demo-script.md](docs/demo-script.md) for a recording walkthrough.
 
 ## Health checks
 
