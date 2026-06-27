@@ -1,0 +1,38 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Python / uv
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# .NET
+bin/
+obj/
+*.user
+TestResults/
+
+# Local document store / vector data
+data/
+qdrant_storage/
+ollama_models/
+
+# Large or private source documents (never commit)
+sample-data/local/
+*.pdf
+
+# IDE / OS
+.idea/
+.vs/
+*.swp
+.DS_Store
