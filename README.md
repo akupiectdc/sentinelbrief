@@ -83,7 +83,7 @@ The same tools exist on every platform; only the install command differs.
 The first two steps are identical everywhere:
 
 ```bash
-git clone <your-repo-url> sentinelbrief
+git clone https://github.com/akupiectdc/sentinelbrief.git
 cd sentinelbrief
 cp .env.example .env          # Windows PowerShell: copy .env.example .env
 ```
