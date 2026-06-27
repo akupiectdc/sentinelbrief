@@ -1,0 +1,51 @@
+{
+  "description": "References to public cybersecurity sources for the SentinelBrief demo corpus. Only references are stored here; the documents themselves are NOT committed to the repository. Download them locally (outside the repo) before ingesting.",
+  "license_note": "Each source is published by its respective organization under its own terms. Review and respect the publisher's license before redistributing any content.",
+  "sources": [
+    {
+      "id": "cert-pl-homepage",
+      "title": "CERT Polska",
+      "publisher": "CERT Polska / NASK",
+      "language": "pl",
+      "url": "https://cert.pl/",
+      "type": "portal",
+      "note": "National CERT operated by NASK. Entry point to advisories and reports."
+    },
+    {
+      "id": "cert-pl-news",
+      "title": "CERT Polska - Aktualności (News and advisories)",
+      "publisher": "CERT Polska / NASK",
+      "language": "pl",
+      "url": "https://cert.pl/posts/",
+      "type": "advisories",
+      "note": "Ongoing security advisories and analyses published by CERT Polska."
+    },
+    {
+      "id": "cert-pl-annual-report",
+      "title": "CERT Polska - Annual Report (Raport roczny)",
+      "publisher": "CERT Polska / NASK",
+      "language": "pl",
+      "url": "https://cert.pl/publikacje/",
+      "type": "report",
+      "note": "Yearly report on the security landscape in Poland. Download the PDF locally; do not commit it."
+    },
+    {
+      "id": "nask-homepage",
+      "title": "NASK - National Research Institute",
+      "publisher": "NASK",
+      "language": "pl",
+      "url": "https://www.nask.pl/",
+      "type": "portal",
+      "note": "Parent institute of CERT Polska; publishes cybersecurity research and reports."
+    },
+    {
+      "id": "enisa-threat-landscape",
+      "title": "ENISA Threat Landscape",
+      "publisher": "ENISA (European Union Agency for Cybersecurity)",
+      "language": "en",
+      "url": "https://www.enisa.europa.eu/topics/cyber-threats/threats-and-trends",
+      "type": "report",
+      "note": "EU-level annual threat landscape. Useful public reference; download locally before ingesting."
+    }
+  ]
+}
