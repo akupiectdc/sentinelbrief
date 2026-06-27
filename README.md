@@ -1,5 +1,7 @@
 # SentinelBrief
 
+[![CI](https://github.com/akupiectdc/sentinelbrief/actions/workflows/ci.yml/badge.svg)](https://github.com/akupiectdc/sentinelbrief/actions/workflows/ci.yml)
+
 SentinelBrief is a local/on-premise cyber intelligence RAG workbench. It indexes
 cybersecurity documents (public CERT publications, public reports, and synthetic
 internal security procedures) and answers questions using only retrieved
