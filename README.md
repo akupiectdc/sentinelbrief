@@ -17,7 +17,7 @@ on-premise LLM architecture: no cloud LLM providers are used or implemented.
 
 ```mermaid
 flowchart LR
-    User([User / Recruiter])
+    User([User / Analyst])
     UI["Demo web page<br/>(dark security console)"]
     subgraph Gateway["C# ASP.NET Core gateway - :8080"]
         GW["Typed HttpClient<br/>forwards - no RAG logic"]

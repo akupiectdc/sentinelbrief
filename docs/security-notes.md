@@ -57,5 +57,4 @@ easier to reason about.
 * No rate limiting.
 * Input validation is minimal beyond Pydantic model parsing.
 
-These are acceptable for a local portfolio MVP and are listed honestly rather
-than hidden.
+These are acceptable for a local MVP and are listed honestly rather than hidden.

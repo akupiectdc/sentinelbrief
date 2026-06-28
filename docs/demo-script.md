@@ -1,7 +1,7 @@
 # Demo Script
 
-A short walk-through for showing SentinelBrief in an interview. The full local
-RAG flow works end-to-end; the fastest way to show it is the web page (below).
+A short walk-through of SentinelBrief's local RAG flow, end-to-end. The fastest
+way to see it is the web page (below).
 
 ## 0. Setup
 
@@ -42,7 +42,7 @@ curl http://localhost:8000/health
 curl http://localhost:8080/health
 ```
 
-Talking point: the C# gateway and the Python AI core are separate services; the
+Note: the C# gateway and the Python AI core are separate services; the
 gateway forwards work to the AI core.
 
 ## 2. Chunking preview (works now)
@@ -56,7 +56,7 @@ curl -X POST http://localhost:8000/documents/chunk \
   -d '{"title":"Incident Response Policy","text":"...paste content...","source_type":"synthetic"}'
 ```
 
-Talking point: deterministic, character-based chunking with overlap and chunk
+Note: deterministic, character-based chunking with overlap and chunk
 metadata, ready to be embedded.
 
 ## 3. Ingest a document (works now)
@@ -71,7 +71,7 @@ curl -X POST http://localhost:8000/documents \
 curl http://localhost:8000/documents
 ```
 
-Talking point: parse -> chunk -> embed (Ollama) -> store vectors in Qdrant,
+Note: parse -> chunk -> embed (Ollama) -> store vectors in Qdrant,
 returning document metadata (`document_id`, `ingested_at`, `chunk_count`). You
 can show the stored vectors in the Qdrant dashboard at
 <http://localhost:6333/dashboard>.
@@ -84,7 +84,7 @@ curl -X POST http://localhost:8000/embeddings/preview \
   -d '{"text":"How should a phishing email be triaged?"}'
 ```
 
-Talking point: chunks are embedded locally via Ollama through the provider
+Note: chunks are embedded locally via Ollama through the provider
 abstraction. Response reports the model, vector dimension, and a short preview.
 Storing these vectors in Qdrant is the next slice.
 
@@ -96,7 +96,7 @@ curl -X POST http://localhost:8000/search \
   -d '{"query":"How should security incidents be reported?","top_k":3}'
 ```
 
-Talking point: the query is embedded locally, Qdrant returns the most similar
+Note: the query is embedded locally, Qdrant returns the most similar
 chunks, results below `MIN_RETRIEVAL_SCORE` are dropped, and the response
 exposes scores + source titles + chunk IDs (the retrieval metadata). This is the
 evidence that the `/ask` answer will be built from.
@@ -136,13 +136,13 @@ curl -X POST http://localhost:8000/ask \
 Expected: `refused: true` and the answer *"I do not have enough evidence in the
 indexed documents to answer this question."*
 
-Talking point: the system refuses rather than hallucinating - a key property for
+Note: the system refuses rather than hallucinating - a key property for
 a security intelligence tool. Refusal triggers either when no chunk clears
 `MIN_RETRIEVAL_SCORE` or when the grounded model declines.
 
 ## Recording a demo GIF
 
-A short GIF on the web page makes the repo "clickable" for reviewers.
+A short GIF on the web page makes the repo "clickable" at a glance.
 
 1. Start the stack and seed the corpus (steps 0 above).
 2. Open <http://localhost:8080> in a clean browser window (hide bookmarks).
