@@ -195,7 +195,7 @@ The C# gateway serves a small demo page at <http://localhost:8080>.
 some other way, seed it manually first:
 
 ```bash
-uv run --project src/ai-service python scripts/seed_demo.py   # targets the gateway at :8080
+uv run --project src/ai-service python scripts/seed_demo.py   # defaults to the ai-service at :8000
 ```
 
 Then open <http://localhost:8080> and ask a question (or click an example).
