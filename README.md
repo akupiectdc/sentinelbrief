@@ -166,6 +166,10 @@ volume and Ollama's models stay on disk, so the next start needs no re-download.
 
 ### Run the two services individually (any OS, for development)
 
+The Python project lives in `src/ai-service` (its `pyproject.toml` and `uv.lock`
+are there). Recreate the exact locked environment with `uv sync` from that
+directory; `uv` creates a local `.venv` and installs the pinned dependencies.
+
 ```bash
 # ai-service (auto-reload) - terminal 1
 cd src/ai-service && uv sync && uv run uvicorn app.main:app --reload --port 8000

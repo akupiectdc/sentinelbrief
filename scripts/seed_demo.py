@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Ingest the synthetic demo documents so the demo corpus is populated.
 
 Uses only the Python standard library (no dependencies). Sends each Markdown
