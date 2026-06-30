@@ -1,18 +1,21 @@
-# Local development stack for SentinelBrief.
-# Starts Qdrant, Ollama, the Python ai-service and the C# web-api.
+# VM deployment stack for SentinelBrief (deployment branch).
+# Same services as main, with VM-specific settings baked in: a restart policy so
+# the stack returns after a reboot, a kept-warm chat model (OLLAMA_KEEP_ALIVE),
+# and a smaller chat model that stays responsive on a CPU-only VM.
 #
 # Usage:
-#   docker compose up --build
+#   docker compose up -d --build
 #
 # Notes:
-# - Ollama models must be pulled once after the container is running, e.g.:
-#     docker compose exec ollama ollama pull llama3.1:8b
+# - Pull the models once after the containers are running:
+#     docker compose exec ollama ollama pull llama3.2:3b
 #     docker compose exec ollama ollama pull nomic-embed-text
 # - Restricted mode keeps everything on the local network only.
 
 services:
   qdrant:
     image: qdrant/qdrant:latest
+    restart: unless-stopped
     ports:
       - "6333:6333"
       - "6334:6334"
@@ -21,12 +24,16 @@ services:
 
   ollama:
     image: ollama/ollama:latest
+    restart: unless-stopped
+    environment:
+      OLLAMA_KEEP_ALIVE: "-1"
     ports:
       - "11434:11434"
     volumes:
       - ollama_models:/root/.ollama
 
   ai-service:
+    restart: unless-stopped
     build:
       context: ./src/ai-service
     ports:
@@ -36,7 +43,7 @@ services:
       LLM_PROVIDER: "ollama"
       EMBEDDING_PROVIDER: "ollama"
       OLLAMA_BASE_URL: "http://ollama:11434"
-      OLLAMA_CHAT_MODEL: "llama3.1:8b"
+      OLLAMA_CHAT_MODEL: "llama3.2:3b"
       OLLAMA_EMBEDDING_MODEL: "nomic-embed-text"
       QDRANT_URL: "http://qdrant:6333"
       QDRANT_COLLECTION: "sentinelbrief_documents"
@@ -48,6 +55,7 @@ services:
       - ollama
 
   web-api:
+    restart: unless-stopped
     build:
       context: ./src/web-api
     ports:
