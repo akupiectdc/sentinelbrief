@@ -27,6 +27,13 @@ public class AiServiceClient
         _httpClient = httpClient;
     }
 
+    /// <summary>Returns the ai-service's non-secret runtime configuration.</summary>
+    public async Task<InfoResponse> GetInfoAsync(CancellationToken cancellationToken = default)
+    {
+        return (await _httpClient.GetFromJsonAsync<InfoResponse>(
+            "/info", JsonOptions, cancellationToken))!;
+    }
+
     /// <summary>Returns true if the ai-service health endpoint responds successfully.</summary>
     public async Task<bool> IsHealthyAsync(CancellationToken cancellationToken = default)
     {

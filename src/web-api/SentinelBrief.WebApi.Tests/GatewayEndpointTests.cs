@@ -80,6 +80,21 @@ public class GatewayEndpointTests : IClassFixture<GatewayEndpointTests.StubFacto
     }
 
     [Fact]
+    public async Task Info_ForwardsConfiguredModels()
+    {
+        var client = _factory.CreateClient();
+
+        var response = await client.GetAsync("/info");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var body = await response.Content.ReadFromJsonAsync<InfoResponse>();
+        Assert.NotNull(body);
+        Assert.Equal("llama3.2:3b", body!.ChatModel);
+        Assert.Equal("nomic-embed-text", body.EmbeddingModel);
+        Assert.True(body.RestrictedMode);
+    }
+
+    [Fact]
     public async Task Ask_WhenAiServiceFails_Returns502()
     {
         var client = _factory.CreateClient();
@@ -147,6 +162,15 @@ public class GatewayEndpointTests : IClassFixture<GatewayEndpointTests.StubFacto
                      "filename":null,"url":null,"ingested_at":"2026-06-27T10:00:00Z","chunk_count":3}
                     """,
                     HttpStatusCode.Created);
+            }
+
+            if (method == HttpMethod.Get && path == "/info")
+            {
+                return Json(
+                    """
+                    {"restricted_mode":true,"llm_provider":"ollama","embedding_provider":"ollama",
+                     "chat_model":"llama3.2:3b","embedding_model":"nomic-embed-text"}
+                    """);
             }
 
             if (method == HttpMethod.Get && path == "/documents")

@@ -18,6 +18,16 @@ def test_health_endpoint() -> None:
     assert "restricted_mode" in body
 
 
+def test_info_endpoint_reports_configured_models() -> None:
+    response = client.get("/info")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["chat_model"]
+    assert body["embedding_model"]
+    assert body["llm_provider"]
+    assert isinstance(body["restricted_mode"], bool)
+
+
 def test_chunk_endpoint_returns_chunks() -> None:
     payload = {
         "title": "Incident Response Policy",

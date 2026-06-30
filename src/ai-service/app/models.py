@@ -20,6 +20,16 @@ class HealthResponse(BaseModel):
     restricted_mode: bool
 
 
+class InfoResponse(BaseModel):
+    """Non-secret runtime configuration (for the demo banner and debugging)."""
+
+    restricted_mode: bool
+    llm_provider: str
+    embedding_provider: str
+    chat_model: str
+    embedding_model: str
+
+
 class ChunkRequest(BaseModel):
     """Request to parse and chunk a document's text."""
 

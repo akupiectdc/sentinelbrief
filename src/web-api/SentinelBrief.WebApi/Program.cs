@@ -42,6 +42,11 @@ app.MapGet("/ai/health", async (AiServiceClient ai, CancellationToken ct) =>
     return Results.Ok(new AiHealthResponse(reachable));
 });
 
+// Exposes the ai-service's non-secret runtime config (model names, restricted
+// mode) so the demo page can show the real configured model.
+app.MapGet("/info", async (AiServiceClient ai, CancellationToken ct) =>
+    Results.Ok(await ai.GetInfoAsync(ct)));
+
 // --- Forwarding endpoints. The gateway forwards AI work to the ai-service and
 // implements no RAG logic itself. ---
 

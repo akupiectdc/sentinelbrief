@@ -58,3 +58,10 @@ public record AnswerResponse(
     IReadOnlyList<Citation> Citations,
     IReadOnlyList<string> RetrievedTitles,
     bool Refused);
+
+public record InfoResponse(
+    bool RestrictedMode,
+    string LlmProvider,
+    string EmbeddingProvider,
+    string ChatModel,
+    string EmbeddingModel);
