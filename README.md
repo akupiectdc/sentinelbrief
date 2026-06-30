@@ -13,6 +13,18 @@ on-premise LLM architecture: no cloud LLM providers are used or implemented.
 
 ![SentinelBrief demo: asking a question and getting a grounded, cited answer](docs/assets/demo.gif)
 
+## Live demo
+
+A hosted instance runs at
+<https://sentinelbrief.westeurope.cloudapp.azure.com>.
+
+It is the same local-only stack from this repo, deployed on a single Ubuntu VM
+with Docker Compose and fronted by [Caddy](https://caddyserver.com/) for
+automatic HTTPS. To stay responsive on a CPU-only VM, the hosted instance runs a
+smaller chat model (`llama3.2:3b`) than the repo default (`llama3.1:8b`); the
+architecture and behaviour are identical. The first answer after an idle period
+can take a few extra seconds while the model loads.
+
 ## Architecture
 
 ```mermaid
